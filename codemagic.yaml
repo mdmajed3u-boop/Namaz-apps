@@ -5,10 +5,42 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       flutter: stable
+      java: 17
     scripts:
       - name: Generate platform folders
         script: |
           flutter create . --platforms=android --org com.namazapp
+      - name: Enable core library desugaring
+        script: |
+          GRADLE_FILE="android/app/build.gradle.kts"
+          if [ ! -f "$GRADLE_FILE" ]; then
+            GRADLE_FILE="android/app/build.gradle"
+          fi
+          echo "Patching $GRADLE_FILE"
+
+          if [[ "$GRADLE_FILE" == *.kts ]]; then
+            sed -i '' 's/compileOptions {/compileOptions {\n        isCoreLibraryDesugaringEnabled = true/' "$GRADLE_FILE" 2>/dev/null || \
+            sed -i 's/compileOptions {/compileOptions {\n        isCoreLibraryDesugaringEnabled = true/' "$GRADLE_FILE"
+
+            if ! grep -q "coreLibraryDesugaring" "$GRADLE_FILE"; then
+              echo '
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+}' >> "$GRADLE_FILE"
+            fi
+          else
+            sed -i '' 's/compileOptions {/compileOptions {\n        coreLibraryDesugaringEnabled true/' "$GRADLE_FILE" 2>/dev/null || \
+            sed -i 's/compileOptions {/compileOptions {\n        coreLibraryDesugaringEnabled true/' "$GRADLE_FILE"
+
+            if ! grep -q "coreLibraryDesugaring" "$GRADLE_FILE"; then
+              echo '
+dependencies {
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
+}' >> "$GRADLE_FILE"
+            fi
+          fi
+
+          cat "$GRADLE_FILE"
       - name: Get Flutter packages
         script: |
           flutter pub get
