@@ -1,0 +1,46 @@
+name: namaz_app
+description: "একটি সম্পূর্ণ নামাজের সময়সূচী অ্যাপ - Namaz Time App"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+
+  # নেটওয়ার্ক কল এর জন্য
+  http: ^1.2.1
+
+  # লোকেশন বের করার জন্য
+  geolocator: ^12.0.0
+  geocoding: ^3.0.0
+
+  # পারমিশন হ্যান্ডেল করার জন্য
+  permission_handler: ^11.3.1
+
+  # লোকাল স্টোরেজ (সেটিংস সেভ রাখার জন্য)
+  shared_preferences: ^2.2.3
+
+  # তারিখ ও সময় ফরম্যাট করার জন্য
+  intl: ^0.19.0
+
+  # কিবলা কম্পাসের জন্য ডিভাইস সেন্সর
+  flutter_compass: ^0.8.1
+
+  # সুন্দর ফন্ট (ঐচ্ছিক - বাংলা ফন্ট সাপোর্টের জন্য)
+  google_fonts: ^6.2.1
+
+  # আজান/নামাজের নোটিফিকেশনের জন্য
+  flutter_local_notifications: ^17.2.2
+  timezone: ^0.9.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
